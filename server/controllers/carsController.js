@@ -33,7 +33,7 @@ const createCar = async (req, res) => {
                     description,
                     imageUrl: `http://localhost:${process.env.PORT}/static/${req.file.filename}`
                 })
-            if (!car) return req.status(400).json({ message: "model not created" });
+            if (!car) return req.status(400).json({ message: "Model not created" });
 
             res.status(201).json(car);
 
@@ -47,11 +47,11 @@ const getCarByModel = async (req, res) => {
     try {
         const id = req?.params?.id;
         const model = await Cars.findById({ _id: id });
+        if (!model) return res.status(404).json({ message: "Model not found" });
+        
         return res.status(200).json(model);
-    } catch (error) {
-        if (error.kind === "ObjectId") {
-            return res.status(404).json({ message: "Model not found" });
-        }
+    }
+    catch (error) {
         return res.status(500).json({ message: "Please, try again!" })
     }
 }
